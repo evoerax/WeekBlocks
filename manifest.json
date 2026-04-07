@@ -1,0 +1,9 @@
+{
+  "id": "weekly-planner",
+  "name": "Weekly Planner",
+  "version": "0.1.0",
+  "minAppVersion": "1.5.0",
+  "description": "Plan each week in a dedicated tab using Markdown-backed fixed slots and custom time blocks.",
+  "author": "Leon",
+  "isDesktopOnly": false
+}
