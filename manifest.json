@@ -1,9 +1,9 @@
 {
-  "id": "weekly-planner",
-  "name": "Weekly Planner",
+  "id": "week-blocks",
+  "name": "WeekBlocks",
   "version": "0.1.0",
   "minAppVersion": "1.5.0",
-  "description": "Plan each week in a dedicated tab using Markdown-backed fixed slots and custom time blocks.",
+  "description": "Weekly Markdown work log with fixed day sections and custom time blocks.",
   "author": "Leon",
   "isDesktopOnly": false
 }
