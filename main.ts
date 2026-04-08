@@ -1,3 +1,3 @@
-import WeeklyPlannerPlugin from "./src/plugin";
+import WeekBlocksPlugin from "./src/plugin";
 
-export default WeeklyPlannerPlugin;
+export default WeekBlocksPlugin;
