@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { CUSTOM_BLOCKS_HEADING, DEFAULT_SLOT_NAMES } from "../src/constants";
 import { parseWeeklyLog } from "../src/markdown/parser";
+import { buildWeeklyLogTemplate } from "../src/markdown/template";
 
 function buildWeeklyMarkdown(overrides?: {
   frontmatter?: string[];
@@ -176,5 +177,118 @@ describe("parseWeeklyLog", () => {
     });
 
     expect(() => parseWeeklyLog(markdown)).toThrow(/slots/i);
+  });
+
+  it("allows extra frontmatter keys", () => {
+    const markdown = buildWeeklyMarkdown({
+      frontmatter: [
+        "type: weekly-log",
+        "week: 2026-W15",
+        "start: 2026-04-06",
+        "end: 2026-04-12",
+        "tags:",
+        "  - weekly",
+        "aliases:",
+        "  - 本周记录",
+        "summary: keep this",
+        "slots:",
+        ...DEFAULT_SLOT_NAMES.map((slotName) => `  - ${slotName}`),
+      ],
+    });
+
+    const parsed = parseWeeklyLog(markdown);
+
+    expect(parsed.weekId).toBe("2026-W15");
+    expect(parsed.slotNames).toEqual([...DEFAULT_SLOT_NAMES]);
+  });
+
+  it("parses the current weekly template output", () => {
+    const markdown = buildWeeklyLogTemplate({
+      weekId: "2026-W15",
+      startDate: "2026-04-06",
+      endDate: "2026-04-12",
+      slotNames: ["晨间", "专注", "收尾"],
+    });
+
+    const parsed = parseWeeklyLog(markdown);
+
+    expect(parsed).toEqual({
+      weekId: "2026-W15",
+      startDate: "2026-04-06",
+      endDate: "2026-04-12",
+      slotNames: ["晨间", "专注", "收尾"],
+      days: [
+        {
+          dayKey: "monday",
+          title: "周一",
+          slotLogs: [
+            { slotName: "晨间", entries: [] },
+            { slotName: "专注", entries: [] },
+            { slotName: "收尾", entries: [] },
+          ],
+          customBlocks: [],
+        },
+        {
+          dayKey: "tuesday",
+          title: "周二",
+          slotLogs: [
+            { slotName: "晨间", entries: [] },
+            { slotName: "专注", entries: [] },
+            { slotName: "收尾", entries: [] },
+          ],
+          customBlocks: [],
+        },
+        {
+          dayKey: "wednesday",
+          title: "周三",
+          slotLogs: [
+            { slotName: "晨间", entries: [] },
+            { slotName: "专注", entries: [] },
+            { slotName: "收尾", entries: [] },
+          ],
+          customBlocks: [],
+        },
+        {
+          dayKey: "thursday",
+          title: "周四",
+          slotLogs: [
+            { slotName: "晨间", entries: [] },
+            { slotName: "专注", entries: [] },
+            { slotName: "收尾", entries: [] },
+          ],
+          customBlocks: [],
+        },
+        {
+          dayKey: "friday",
+          title: "周五",
+          slotLogs: [
+            { slotName: "晨间", entries: [] },
+            { slotName: "专注", entries: [] },
+            { slotName: "收尾", entries: [] },
+          ],
+          customBlocks: [],
+        },
+        {
+          dayKey: "saturday",
+          title: "周六",
+          slotLogs: [
+            { slotName: "晨间", entries: [] },
+            { slotName: "专注", entries: [] },
+            { slotName: "收尾", entries: [] },
+          ],
+          customBlocks: [],
+        },
+        {
+          dayKey: "sunday",
+          title: "周日",
+          slotLogs: [
+            { slotName: "晨间", entries: [] },
+            { slotName: "专注", entries: [] },
+            { slotName: "收尾", entries: [] },
+          ],
+          customBlocks: [],
+        },
+      ],
+    });
   });
 });

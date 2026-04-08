@@ -143,7 +143,20 @@ function parseFrontmatter(lines: string[]) {
       };
     }
 
-    if (line === "slots:") {
+    if (line.trim() === "") {
+      index += 1;
+      continue;
+    }
+
+    const fieldMatch = /^(?<key>[A-Za-z0-9_-]+):(?<value>.*)$/u.exec(line);
+    if (!fieldMatch?.groups) {
+      throw new Error(`Invalid frontmatter line ${index + 1}: "${line}".`);
+    }
+
+    const key = fieldMatch.groups.key;
+    const value = fieldMatch.groups.value.trim();
+
+    if (key === "slots") {
       fields.hasSlotsField = true;
       index += 1;
       while (index < lines.length && lines[index].startsWith("  - ")) {
@@ -154,17 +167,26 @@ function parseFrontmatter(lines: string[]) {
         fields.slots.push(slotName);
         index += 1;
       }
+
+      if (index < lines.length && isIndentedYamlContinuation(lines[index])) {
+        throw new Error(
+          `Invalid frontmatter: slots items must use "  - <slot name>" format at line ${index + 1}.`,
+        );
+      }
+
       continue;
     }
 
-    const match = /^(type|week|start|end):\s*(.+)$/u.exec(line);
-    if (!match?.[1] || !match[2]) {
-      throw new Error(`Invalid frontmatter line ${index + 1}: "${line}".`);
+    if (key === "type" || key === "week" || key === "start" || key === "end") {
+      fields[key] = value;
+      index += 1;
+      continue;
     }
 
-    const key = match[1] as "type" | "week" | "start" | "end";
-    fields[key] = match[2].trim();
     index += 1;
+    while (index < lines.length && isIndentedYamlContinuation(lines[index])) {
+      index += 1;
+    }
   }
 
   throw new Error("Missing frontmatter closing delimiter.");
@@ -273,4 +295,8 @@ function skipBlankLines(lines: string[], index: number) {
   }
 
   return nextIndex;
+}
+
+function isIndentedYamlContinuation(line: string) {
+  return line.trim() === "" || /^[ \t]+/u.test(line);
 }
