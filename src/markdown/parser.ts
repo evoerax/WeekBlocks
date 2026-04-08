@@ -27,6 +27,16 @@ export function parseWeeklyLog(markdown: string): WeeklyLog {
     throw new Error("Invalid frontmatter: expected type: weekly-log.");
   }
 
+  if (!frontmatter.hasSlotsField) {
+    throw new Error("Invalid frontmatter: missing required slots field.");
+  }
+
+  if (frontmatter.slots.length === 0) {
+    throw new Error(
+      "Invalid frontmatter: slots must contain at least one slot name.",
+    );
+  }
+
   let index = skipBlankLines(lines, nextIndex);
   const expectedTitle = `# ${weekId} 周记录`;
   if (lines[index] !== expectedTitle) {
@@ -117,8 +127,10 @@ function parseFrontmatter(lines: string[]) {
     start?: string;
     end?: string;
     slots: string[];
+    hasSlotsField: boolean;
   } = {
     slots: [],
+    hasSlotsField: false,
   };
 
   let index = 1;
@@ -132,6 +144,7 @@ function parseFrontmatter(lines: string[]) {
     }
 
     if (line === "slots:") {
+      fields.hasSlotsField = true;
       index += 1;
       while (index < lines.length && lines[index].startsWith("  - ")) {
         const slotName = lines[index].slice(4).trim();

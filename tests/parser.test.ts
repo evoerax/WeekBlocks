@@ -150,4 +150,31 @@ describe("parseWeeklyLog", () => {
 
     expect(() => parseWeeklyLog(markdown)).toThrow(/seven day sections/i);
   });
+
+  it("rejects missing slots frontmatter", () => {
+    const markdown = buildWeeklyMarkdown({
+      frontmatter: [
+        "type: weekly-log",
+        "week: 2026-W15",
+        "start: 2026-04-06",
+        "end: 2026-04-12",
+      ],
+    });
+
+    expect(() => parseWeeklyLog(markdown)).toThrow(/slots/i);
+  });
+
+  it("rejects empty slots frontmatter", () => {
+    const markdown = buildWeeklyMarkdown({
+      frontmatter: [
+        "type: weekly-log",
+        "week: 2026-W15",
+        "start: 2026-04-06",
+        "end: 2026-04-12",
+        "slots:",
+      ],
+    });
+
+    expect(() => parseWeeklyLog(markdown)).toThrow(/slots/i);
+  });
 });
