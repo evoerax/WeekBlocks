@@ -1,1 +1,166 @@
-/* Styles will be added in later tasks. */
+.weekblocks-view {
+  --weekblocks-border: color-mix(in srgb, var(--background-modifier-border) 70%, transparent);
+  --weekblocks-muted: var(--text-muted);
+  --weekblocks-surface: color-mix(in srgb, var(--background-secondary) 78%, transparent);
+  padding: 16px;
+}
+
+.weekblocks-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.weekblocks-header {
+  align-items: flex-start;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.weekblocks-header-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.weekblocks-title {
+  margin: 0;
+}
+
+.weekblocks-subtitle {
+  color: var(--weekblocks-muted);
+  font-size: 13px;
+}
+
+.weekblocks-error,
+.weekblocks-empty {
+  background: color-mix(in srgb, var(--background-modifier-error) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--background-modifier-error) 35%, transparent);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
+.weekblocks-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(7, minmax(220px, 1fr));
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+.weekblocks-day {
+  background: var(--weekblocks-surface);
+  border: 1px solid var(--weekblocks-border);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 100%;
+  padding: 14px;
+}
+
+.weekblocks-day-header h3 {
+  margin: 0;
+}
+
+.weekblocks-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.weekblocks-section-header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.weekblocks-section-title {
+  font-size: 14px;
+  margin: 0;
+}
+
+.weekblocks-add-button,
+.weekblocks-remove-button {
+  background: transparent;
+  border: 1px solid var(--weekblocks-border);
+  border-radius: 10px;
+  color: var(--text-normal);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 6px 10px;
+}
+
+.weekblocks-entry-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.weekblocks-entry-row {
+  background: color-mix(in srgb, var(--background-primary) 76%, transparent);
+  border: 1px solid var(--weekblocks-border);
+  border-radius: 12px;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 82px 88px minmax(140px, 1fr) auto;
+  padding: 10px;
+}
+
+.weekblocks-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.weekblocks-field-grow {
+  min-width: 140px;
+}
+
+.weekblocks-field-label {
+  color: var(--weekblocks-muted);
+  font-size: 11px;
+}
+
+.weekblocks-entry-row input {
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 8px;
+  padding: 7px 9px;
+  width: 100%;
+}
+
+.weekblocks-placeholder {
+  color: var(--weekblocks-muted);
+  font-size: 12px;
+  padding: 4px 0;
+}
+
+@media (max-width: 1400px) {
+  .weekblocks-grid {
+    grid-template-columns: repeat(3, minmax(240px, 1fr));
+  }
+}
+
+@media (max-width: 960px) {
+  .weekblocks-grid {
+    grid-template-columns: repeat(2, minmax(240px, 1fr));
+  }
+
+  .weekblocks-entry-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .weekblocks-view {
+    padding: 12px;
+  }
+
+  .weekblocks-grid {
+    grid-template-columns: 1fr;
+  }
+}
